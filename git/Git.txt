@@ -1,0 +1,53 @@
+GIT 
+---------------------------------------------------------------------------------------------------------------------------
+Basic Configurations
+git config --global user.name "Luiz Zarco"
+git config --global user.email "luizfzarco@gmail.com"
+
+You have to commit (add) so that Git can Trace it. You can go back to the commits.
+------------------------------------------------------------------------------------
+git status (Check if there are changes in the Project)
+---------------------------------------------------------------------------------------------------------------------------
+git diff (Show difference between modified files)
+---------------------------------------------------------------------------------------------------------------------------
+git diff --staged (Compare already added but not commited)
+---------------------------------------------------------------------------------------------------------------------------
+First Step to Commit: 
+git add .      	(Tell git about the changes)
+git add First.txt
+
+/* File go to unstage before the commit... */
+
+Second Step to Commit: 
+git commit -m "This is the message of the first commit" (Make a commit)
+---------------------------------------------------------------------------------------------------------------------------
+git log (Show the commits)
+git log --author="Zarco"
+---------------------------------------------------------------------------------------------------------------------------
+DELETE:
+git rm File.txt (Remove both from Git and Directory) -- Commit after it
+---------------------------------------------------------------------------------------------------------------------------
+RENAME:
+git mv oldname.txt newname.txt
+OR rename on Directory then add new and delete old. 
+---------------------------------------------------------------------------------------------------------------------------
+To commit directly from the working copy to the repository (without staging)
+git commit -am "Update..." (Commit modified minor changes)
+---------------------------------------------------------------------------------------------------------------------------
+UNDO CHANGES:
+git checkout -- index.html  (Undo modified changes in index.html, replacing with repository's)
+---------------------------------------------------------------------------------------------------------------------------
+UNSTAGE FILES:
+If file was added but not commited:
+git reset HEAD file.html
+---------------------------------------------------------------------------------------------------------------------------
+GET OLD VERSION:
+git log
+git checkout 4020988622a426f2c3b336d419c45843f4472c25 -- index.html
+---------------------------------------------------------------------------------------------------------------------------
+ADDING TO GIT HUB:
+git remote add gitthubrep https://github.com/luizzarco/example.git
+git remote
+
+git push -u githubrep
+---------------------------------------------------------------------------------------------------------------------------

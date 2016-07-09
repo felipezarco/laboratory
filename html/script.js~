@@ -1,0 +1,6 @@
+
+// Window Pop-Up!
+window.alert('Haha, charade you are!');
+
+// Console Log Display (Browser)
+console.log(1 + 1);

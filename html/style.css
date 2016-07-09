@@ -1,0 +1,12 @@
+a:link    {color:green; background-color:transparent; text-decoration:none}
+a:visited {color:yellow; background-color:transparent; text-decoration:none}
+a:hover   {color:red; background-color:transparent; text-decoration:underline}
+a:active  {color:pink; background-color:transparent; text-decoration:underline}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+ul#menu li {
+    display:inline;
+}
