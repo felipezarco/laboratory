@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)https://www.cpe.ku.ac.th/~jim/java-io.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+  <title>Faster Input for Java</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="James Brucker">
+  <meta name="Keywords" content="BufferedReader,numeric input">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+ <h1 align="center">Faster Input for Java</h1>
+
+ <h2>Problem: Scanner is <em>Slooooow</em></h2>
+ <p>
+ Using <tt>Scanner</tt> to parse input is  convenient, but too slow.
+ Using BufferedReader and StringTokenizer is much faster,
+ but its a lot of typing during a competition.
+ Can we make Java easier for the ACM ICPC?
+ </p>
+ <p>
+ </p>
+ <font face="Arial,Helvetica,sans serif">
+ Too much typing in Java (and worse if you use BufferedReader)
+ </font><table align="center" border="1">
+ <thead align="center">
+ 
+ </thead>
+ <tbody><tr>
+ <th width="50%">Java</th>
+ <th width="50%">C/C++</th>
+ </tr>
+ <tr>
+ <td>
+ <pre> Scanner input =
+    new Scanner(System.in);
+ double x = input.nextDouble();
+ </pre>
+ </td>
+ <td>
+ <pre> double x;
+ scanf("%lf",&amp;x);
+ </pre>
+ </td>
+ </tr>
+ </tbody></table>
+
+ <h2>How Slow?</h2>
+ <p>
+ I ran some tests to 
+ read 10,000,000 <tt>int</tt> or <tt>double</tt>
+ from a file. Times are shown in the tables below.
+ I ran the tests
+ on an Intel Core2 Duo 2.4GHz cpu with Windows XP Pro SP3,
+ Sun JDK 6.0r22, and GNU gcc 4.5.2.
+ </p>
+ <p>
+ <font face="Arial,Helvetica,sans serif">
+ Table 1. Time to read 10,000,000 int values from file
+ </font><table align="center" cellpadding="5" border="1">
+ <thead>
+ 
+ </thead>
+ <tbody>
+ <tr valign="top">
+ <th>Input Method</th> <th>Time (sec)</th>
+ </tr>
+ <tr>
+ <td>C scanf("%d", &amp;arg) </td> <td>3.78</td>
+ </tr>
+ <tr>
+ <td>Scanner.parseInt()</td> 
+ <td>29.52</td>
+ </tr>
+ <tr>
+ <td>BufferedReader + inline Integer.parseInt</td> 
+ <td>2.89</td>
+ </tr>
+ <tr>
+ <td>BufferedReader + Reader.nextInt method</td> 
+ <td>3.01</td>
+ </tr>
+ </tbody></table>
+ </p>
+
+ <p>
+ <font face="Arial,Helvetica,sans serif">
+ Table 2. Time to read 10,000,000 double values from file
+ </font><table align="center" cellpadding="5" border="1">
+ <thead>
+ 
+ </thead>
+ <tbody>
+  <tr valign="top">
+ <th>Input Method</th> <th>Time (sec)</th>
+ </tr>
+ <tr>
+ <td>C scanf("%lf", &amp;arg)</td> 
+ <td>11.9</td>
+ </tr>
+ <tr>
+ <td>Scanner.parseDouble()</td> 
+ <td>66.86</td>
+ </tr>
+ <tr>
+ <td>BufferedReader + inline Double.parseDouble</td> <td>3.06</td>
+ </tr>
+ <tr>
+ <td>BufferedReader + Reader.nextDouble method</td> 
+ <td>3.14</td>
+ </tr>
+ <tr>
+</tr></tbody></table>
+
+ </p><p>
+ <font face="Arial,Helvetica,sans serif">
+ Listing 1. Sample methods to read using Scanner and BufferedReader.
+ We split the input line into string tokens,
+ since one line may contain multiple values.
+ To split the input,
+ <tt>StringTokenizer</tt> is 4X faster than <tt>string.split()</tt>.
+
+ </font><table align="center" cellpadding="5" border="1">
+ <thead align="center">
+ 
+ </thead>
+ <tbody>
+ <tr valign="top">
+ <td>
+ <pre> /** Read count integers using Scanner */
+ static int scanInteger(int count) {
+    Scanner scanner = new Scanner(input);
+    int last = 0;
+    while (count-- &gt; 0) {
+	    last = scanner.nextInt();
+    }
+    return last;
+ }
+ </pre>
+ </td>
+
+ <td>
+ <pre> /** Read count integers using BufferedReader */
+ static int readIntegers(int count) 
+        throws IOException {
+    BufferedReader reader = new BufferedReader(
+               new InputStreamReader(input) );
+    StringTokenizer tokenizer = new StringTokenizer("");
+    int last = 0;
+    while (count-- &gt; 0) {
+        if (! tokenizer.hasMoreTokens() ) {
+            tokenizer = new StringTokenizer(reader.readLine());
+        }
+        last = Integer.parseInt(tokenizer.nextToken());
+    }
+    return last;
+ }
+ </pre>
+ </td>
+ </tr>
+ </tbody></table>
+ </p>
+
+ <h2>Creating Reusable Code</h2>
+
+ <p>
+ How to reduce the burden of reading input in Java?
+ Java has some advantages over C/C++: fewer syntax errors, 
+ maybe fewer logic errors, 
+ good code generation and debugger in Eclipse.
+ </p>
+ 
+<p>
+ To make Java easier to use, let's put the reader
+ code in a separate class.
+ (You can put many classes in one source file, 
+ provided that only one class is "public".)
+ We can copy-and-paste our <tt>Reader</tt> 
+ class into <em>every</em> ACM task, 
+ so we only have to write it once during competition.
+ One person can write it while the others study the problems.
+</p>
+
+<p>
+Listing 2 is an example.  
+Let me know if you find any short, more efficient code.
+I use <tt>StringTokenizer</tt>
+instead of <tt>string.split()</tt> because StringTokenizer
+is much faster.
+I use static methods so we don't have to create or keep track
+of a "Reader" object,
+and use the default (package) scope so I don't have to
+type "<tt>public</tt>".
+</p>
+<p>
+Putting the input methods in a separate class has almost
+no effect on the speed (kind of surprising),
+in my benchmark.
+But it <em><b>does</b></em> make our code more reusable
+and simplifies the rest of your task code.
+</p>
+<p>
+Its still a lot of code, 
+but after you type it once you can copy-paste 
+into every task. 
+</p>
+<p>
+So in your ACM tasks you can write:
+</p>
+<pre class="code">     Reader.init( System.in );
+     double x = Reader.nextDouble();
+     int n = Reader.nextInt();
+</pre>
+
+ <p>
+ <font face="Arial,Helvetica,sans serif">
+ Listing 2. Reusable class for reading int and double.
+ </font><table align="center" cellpadding="5" border="1">
+ <thead align="center">
+ 
+ </thead>
+ <tbody>
+ <tr valign="top">
+ <td>
+<pre>/** Class for buffered reading int and double values */
+class Reader {
+    static BufferedReader reader;
+    static StringTokenizer tokenizer;
+
+    /** call this method to initialize reader for InputStream */
+    static void init(InputStream input) {
+        reader = new BufferedReader(
+                     new InputStreamReader(input) );
+        tokenizer = new StringTokenizer("");
+    }
+
+    /** get next word */
+    static String next() throws IOException {
+        while ( ! tokenizer.hasMoreTokens() ) {
+            //TODO add check for eof if necessary
+            tokenizer = new StringTokenizer(
+                   reader.readLine() );
+        }
+        return tokenizer.nextToken();
+    }
+
+    static int nextInt() throws IOException {
+        return Integer.parseInt( next() );
+    }
+	
+    static double nextDouble() throws IOException {
+        return Double.parseDouble( next() );
+    }
+}
+</pre>
+</td>
+</tr>
+</tbody></table> 
+
+
+</p></body></html>
