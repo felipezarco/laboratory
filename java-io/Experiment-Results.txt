@@ -9,8 +9,9 @@ Scanner Class:
 08-8107
 09-8323
 10-8036
-
-BufferedReader Class:
+Average Execution Time: 8238.1 ms
+---------------------------
+BufferedReader Class: 
 01-1254
 02-1237
 03-1216
@@ -21,28 +22,43 @@ BufferedReader Class:
 08-1239
 09-1250
 10-1247
-
+Average Execution Time: 1236.2 ms
 ---------------------------
-
 ScannerMultiple Class:
 01-53095
 02-51573
 03-47901
 04-51304
 05-54194
-
-
+06-54047
+07-53506
+08-51144
+09-52730
+10-53138
+Average Execution Time: 52263.2
+---------------------------
 BufferedReaderMultiple Class:
 01-33782
 02-34184
 03-34988
 04-31554
 05-31903
-
+06-33638
+07-34478
+08-34364
+09-34359
+10-31916
+Average Execution Time: 33516.6
+---------------------------
 BufferedReadear+Tokenizer Class:
 01-32708
 02-28922
 03-31639
 04-32426
 05-29528
-
+06-31651
+07-31987
+08-33271
+09-32371
+10-32630
+Average Execution Time: 31717.3
